@@ -33,6 +33,11 @@
 		</plugins>
 	</build>
 
+	<!-- MODULES -->
+	<modules>
+		<module>geo-data-generator</module>
+	</modules>
+
 	<!-- DEPENDENCIES -->
 	<dependencies>
 
