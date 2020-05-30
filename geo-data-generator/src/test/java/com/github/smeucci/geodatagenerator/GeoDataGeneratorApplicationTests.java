@@ -31,7 +31,7 @@ class GeoDataGeneratorApplicationTests {
 	private GeoDataGenerator geoDataGeneratorService;
 
 	@Autowired
-	private GeoDataStore geoDataMongoService;
+	private GeoDataStore geoDataStore;
 
 	@MockBean
 	private GeoDataRepository geoDataRepository;
@@ -53,7 +53,7 @@ class GeoDataGeneratorApplicationTests {
 		log.info("==> contextLoads");
 
 		Assertions.assertNotNull(geoDataGeneratorService);
-		Assertions.assertNotNull(geoDataMongoService);
+		Assertions.assertNotNull(geoDataStore);
 		Assertions.assertNotNull(geoDataRepository);
 
 	}
