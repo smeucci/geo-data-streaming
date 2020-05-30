@@ -11,10 +11,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.github.smeucci</groupId>
 	<artifactId>geo-data-generator</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>geo-data-generator</name>
 	<description>Geo Data Generator module</description>
 
