@@ -1,0 +1,8 @@
+version: '3'
+services:
+   geo-data-mongodb:
+       image: mongo:4.2.7
+       environment:
+           MONGO_INITDB_DATABASE: geo-data-streaming
+       ports:
+           - 4250:27017
