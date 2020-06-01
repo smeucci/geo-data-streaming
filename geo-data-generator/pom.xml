@@ -17,9 +17,7 @@
 	<description>Geo Data Generator module</description>
 
 	<!-- PROPERTIES -->
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
+	<properties></properties>
 
 	<!-- BUILD -->
 	<build>
