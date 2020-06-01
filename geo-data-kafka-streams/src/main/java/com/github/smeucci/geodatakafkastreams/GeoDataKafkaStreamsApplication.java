@@ -77,7 +77,7 @@ public class GeoDataKafkaStreamsApplication implements CommandLineRunner {
 
 	}
 
-	private static boolean filterGeoDataByLatitude(String geoDataJson, Predicate<Double> isInThisHemisphere,
+	private boolean filterGeoDataByLatitude(String geoDataJson, Predicate<Double> isInThisHemisphere,
 			Consumer<String> logThisHemisphere) {
 
 		try {
