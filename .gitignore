@@ -30,3 +30,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+geo-data-kafka-connect/\.tmp-connect/
