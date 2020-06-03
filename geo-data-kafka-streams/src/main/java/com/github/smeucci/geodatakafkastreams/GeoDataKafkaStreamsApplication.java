@@ -79,8 +79,10 @@ public class GeoDataKafkaStreamsApplication implements CommandLineRunner {
 
 		// count geo data occurrences by hemisphere
 		KStream<String, Long> hemisphereStatsStream = geoDataStream
-				// group geo data by hemisphere
-				.groupBy((k, v) -> keyForHemisphere.apply(v))
+				// change key, use hemisphere
+				.selectKey((k, v) -> keyForHemisphere.apply(v))
+				// group by key
+				.groupByKey()
 				// count occurrences for each hemisphere
 				.count(Named.as("CountByHemisphere"))
 				// convert to stream
