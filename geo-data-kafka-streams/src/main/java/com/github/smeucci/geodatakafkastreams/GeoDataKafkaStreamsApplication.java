@@ -102,13 +102,7 @@ public class GeoDataKafkaStreamsApplication implements CommandLineRunner {
 		log.info("{}", topology.describe());
 
 		// add shutdown hook
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				kafkaStreams.close();
-			}
-		}));
+		Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
 
 	}
 
