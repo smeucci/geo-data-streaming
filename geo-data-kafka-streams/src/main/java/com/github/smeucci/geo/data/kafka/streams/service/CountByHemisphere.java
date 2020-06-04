@@ -1,7 +1,5 @@
 package com.github.smeucci.geo.data.kafka.streams.service;
 
-import java.util.function.Function;
-
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Named;
@@ -21,15 +19,10 @@ public class CountByHemisphere {
 	 */
 	public void count(KStream<String, String> geoDataStream) {
 
-		// function get key name for hemisphere
-		Function<String, String> keyForHemisphere = geoData -> GeoDataUtils.isInNorthernHemisphere
-				.test(GeoDataUtils.extractLatitude(geoData)) ? GeoDataConstant.NORTHERN_HEMISPHERE_KEY
-						: GeoDataConstant.SOUTHERN_HEMISPHERE_KEY;
-
 		// count geo data occurrences by hemisphere
 		KStream<String, Long> hemisphereStatsStream = geoDataStream
 				// change key, use hemisphere
-				.selectKey((k, v) -> keyForHemisphere.apply(v))
+				.selectKey((k, v) -> GeoDataUtils.keyForHemisphere.apply(v))
 				// group by key
 				.groupByKey()
 				// count occurrences for each hemisphere

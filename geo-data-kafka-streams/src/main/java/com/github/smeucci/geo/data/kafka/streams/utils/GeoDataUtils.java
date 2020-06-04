@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
 
+import com.github.smeucci.geo.data.kafka.streams.costant.GeoDataConstant;
 import com.google.gson.JsonParser; // TODO deprecated use jackson
 
 public class GeoDataUtils {
@@ -26,7 +27,8 @@ public class GeoDataUtils {
 	 * Function get key name for hemisphere
 	 */
 	public static Function<String, String> keyForHemisphere = geoData -> isInNorthernHemisphere
-			.test(extractLatitude(geoData)) ? "northern_hemisphere" : "southern_hemisphere";
+			.test(extractLatitude(geoData)) ? GeoDataConstant.NORTHERN_HEMISPHERE_KEY
+					: GeoDataConstant.SOUTHERN_HEMISPHERE_KEY;
 
 	/**
 	 * Extract latitude from geo data json document
