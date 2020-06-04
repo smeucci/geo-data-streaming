@@ -68,8 +68,8 @@ public class GeoDataStream {
 
 	public void start() {
 
-		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first initialized.");
-		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first initialized.");
+		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
+		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first be initialized.");
 		Assert.notNull(kafkaStreams, "kafkaStreams is null. Must first build.");
 
 		// start the stream application
@@ -82,8 +82,8 @@ public class GeoDataStream {
 
 	public GeoDataStream filterByHemisphere() {
 
-		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first initialized.");
-		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first initialized.");
+		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
+		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first be initialized.");
 		Assert.isNull(kafkaStreams, "kafkaStreams has already been set. Topology already built.");
 
 		Assert.notNull(filterByHemisphere, "filterByHemisphere is not set.");
@@ -97,8 +97,8 @@ public class GeoDataStream {
 
 	public GeoDataStream countByHemisphere() {
 
-		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first initialized.");
-		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first initialized.");
+		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
+		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first be initialized.");
 		Assert.isNull(kafkaStreams, "kafkaStreams has already been set. Topology already built.");
 
 		Assert.notNull(countByHemisphere, "countByHemisphere is not set.");
