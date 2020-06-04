@@ -1,4 +1,4 @@
-package com.github.smeucci.geodatagenerator;
+package com.github.smeucci.geo.data.generator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

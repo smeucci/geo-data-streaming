@@ -1,4 +1,4 @@
-package com.github.smeucci.geodatagenerator;
+package com.github.smeucci.geo.data.generator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,10 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.github.smeucci.geodatagenerator.data.GeoData;
-import com.github.smeucci.geodatagenerator.repository.GeoDataRepository;
-import com.github.smeucci.geodatagenerator.service.GeoDataGenerator;
-import com.github.smeucci.geodatagenerator.service.GeoDataStore;
+import com.github.smeucci.geo.data.generator.data.GeoData;
+import com.github.smeucci.geo.data.generator.repository.GeoDataRepository;
+import com.github.smeucci.geo.data.generator.service.GeoDataGenerator;
+import com.github.smeucci.geo.data.generator.service.GeoDataStore;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { GeoDataGenerator.class, GeoDataStore.class })

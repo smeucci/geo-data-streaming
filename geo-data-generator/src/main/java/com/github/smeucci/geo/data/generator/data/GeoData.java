@@ -1,4 +1,4 @@
-package com.github.smeucci.geodatagenerator.data;
+package com.github.smeucci.geo.data.generator.data;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

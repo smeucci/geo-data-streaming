@@ -1,12 +1,12 @@
-package com.github.smeucci.geodatagenerator.service;
+package com.github.smeucci.geo.data.generator.service;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.github.smeucci.geodatagenerator.data.GeoData;
-import com.github.smeucci.geodatagenerator.repository.GeoDataRepository;
+import com.github.smeucci.geo.data.generator.data.GeoData;
+import com.github.smeucci.geo.data.generator.repository.GeoDataRepository;
 
 @Service
 public class GeoDataStore implements InitializingBean {
