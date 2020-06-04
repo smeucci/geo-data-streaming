@@ -1,4 +1,4 @@
-package com.github.smeucci.geodatakafkastreams;
+package com.github.smeucci.geo.data.kafka.streams;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

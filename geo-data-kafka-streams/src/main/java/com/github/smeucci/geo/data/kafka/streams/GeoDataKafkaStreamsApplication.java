@@ -1,4 +1,4 @@
-package com.github.smeucci.geodatakafkastreams;
+package com.github.smeucci.geo.data.kafka.streams;
 
 import java.util.Properties;
 import java.util.function.Consumer;
