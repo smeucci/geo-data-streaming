@@ -31,6 +31,11 @@ public class GeoDataStream {
 
 	private KafkaStreams kafkaStreams;
 
+	/**
+	 * Create the stream
+	 * 
+	 * @return
+	 */
 	public GeoDataStream init() {
 
 		Assert.isNull(geoDataStream, "geoDataStream has already been set. Cannot initialize again.");
@@ -47,6 +52,12 @@ public class GeoDataStream {
 
 	}
 
+	/**
+	 * Build the topology and create the kafka streams app
+	 * 
+	 * @param properties The properties for the kafka streams app
+	 * @return
+	 */
 	public GeoDataStream build(Properties properties) {
 
 		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first initialized.");
@@ -66,11 +77,14 @@ public class GeoDataStream {
 
 	}
 
+	/**
+	 * Start the kafka streams app. Also set a shutdown hook that closes the app
+	 */
 	public void start() {
 
 		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
 		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first be initialized.");
-		Assert.notNull(kafkaStreams, "kafkaStreams is null. Must first build.");
+		Assert.notNull(kafkaStreams, "kafkaStreams is null. Must first be built.");
 
 		// start the stream application
 		kafkaStreams.start();
@@ -80,6 +94,11 @@ public class GeoDataStream {
 
 	}
 
+	/**
+	 * Filter the stream by hemisphere
+	 * 
+	 * @return
+	 */
 	public GeoDataStream filterByHemisphere() {
 
 		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
@@ -95,6 +114,11 @@ public class GeoDataStream {
 
 	}
 
+	/**
+	 * Count the occurrences for each hemisphere in the stream
+	 * 
+	 * @return
+	 */
 	public GeoDataStream countByHemisphere() {
 
 		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
