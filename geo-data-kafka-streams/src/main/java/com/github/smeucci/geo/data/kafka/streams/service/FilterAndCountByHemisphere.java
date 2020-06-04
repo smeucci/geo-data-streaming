@@ -4,10 +4,12 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.github.smeucci.geo.data.kafka.streams.costant.GeoDataConstant;
 import com.github.smeucci.geo.data.kafka.streams.utils.GeoDataUtils;
 
+@Service
 public class FilterAndCountByHemisphere {
 
 	private static final Logger log = LoggerFactory.getLogger(FilterAndCountByHemisphere.class.getSimpleName());
