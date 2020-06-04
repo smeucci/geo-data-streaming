@@ -8,54 +8,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonParser;
+import com.github.smeucci.geo.data.kafka.streams.costant.GeoDataConstant;
+import com.github.smeucci.geo.data.kafka.streams.utils.GeoDataUtils;
 
 @Service
 public class FilterByHemisphere {
 
 	private static final Logger log = LoggerFactory.getLogger(FilterByHemisphere.class.getSimpleName());
 
-	private static final String NORTHERN_HEMISPHERE_GEO_DATA_TOPIC = "northern.hemisphere.geo.data";
-	private static final String SOUTHERN_HEMISPHERE_GEO_DATA_TOPIC = "southern.hemisphere.geo.data";
-
+	/**
+	 * Filter northern hemisphere geo data
+	 * 
+	 * @param geoDataStream The source geo data stream
+	 */
 	public void northern(KStream<String, String> geoDataStream) {
-
-		// predicate is in northern hemisphere
-		Predicate<Double> isInNorthernHemisphere = latitude -> latitude > 0;
 
 		// consumer log northern hemisphere
 		Consumer<String> logNorthernHemisphere = geoData -> log.info("Northern Hemisphere: {}", geoData);
 
 		// filter for northern hemisphere geo data
 		KStream<String, String> northernHemisphereStream = geoDataStream
-				.filter((k, v) -> filterGeoDataByLatitude(v, isInNorthernHemisphere, logNorthernHemisphere));
+				.filter((k, v) -> filterByLatitude(v, GeoDataUtils.isInNorthernHemisphere, logNorthernHemisphere));
 
 		// set output topic
-		northernHemisphereStream.to(NORTHERN_HEMISPHERE_GEO_DATA_TOPIC);
+		northernHemisphereStream.to(GeoDataConstant.NORTHERN_HEMISPHERE_GEO_DATA_TOPIC);
 
 	}
 
+	/**
+	 * Filter southern geo data
+	 * 
+	 * @param geoDataStream The source geo data stream
+	 */
 	public void southern(KStream<String, String> geoDataStream) {
-
-		// predicate is in southern hemisphere
-		Predicate<Double> isInSouthernHemisphere = latitude -> latitude > 0;
 
 		// consumer log southern hemisphere
 		Consumer<String> logSouthernHemisphere = geoData -> log.info("Southern Hemisphere: {}", geoData);
 
 		// filter for southern hemisphere geo data
 		KStream<String, String> southernHemisphereStream = geoDataStream
-				.filter((k, v) -> filterGeoDataByLatitude(v, isInSouthernHemisphere, logSouthernHemisphere));
+				.filter((k, v) -> filterByLatitude(v, GeoDataUtils.isInSouthernHemisphere, logSouthernHemisphere));
 
 		// set output topic
-		southernHemisphereStream.to(SOUTHERN_HEMISPHERE_GEO_DATA_TOPIC);
+		southernHemisphereStream.to(GeoDataConstant.SOUTHERN_HEMISPHERE_GEO_DATA_TOPIC);
 
 	}
 
-	private boolean filterGeoDataByLatitude(String geoDataJson, Predicate<Double> isInThisHemisphere,
+	private boolean filterByLatitude(String geoDataJson, Predicate<Double> isInThisHemisphere,
 			Consumer<String> logThisHemisphere) {
 
-		Double latitude = getLatitudeFromGeoDataJson(geoDataJson);
+		Double latitude = GeoDataUtils.extractLatitude(geoDataJson);
 
 		boolean inThisHemisphere = isInThisHemisphere.test(latitude);
 
@@ -64,23 +66,6 @@ public class FilterByHemisphere {
 		}
 
 		return inThisHemisphere;
-
-	}
-
-	private double getLatitudeFromGeoDataJson(String geoDataJson) {
-
-		try {
-
-			return JsonParser.parseString(geoDataJson) //
-					.getAsJsonObject() //
-					.get("latitude") //
-					.getAsDouble();
-
-		} catch (Exception e) {
-
-			return 0;
-
-		}
 
 	}
 
