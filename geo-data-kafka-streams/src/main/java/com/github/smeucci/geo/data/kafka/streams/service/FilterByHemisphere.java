@@ -1,8 +1,5 @@
 package com.github.smeucci.geo.data.kafka.streams.service;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import org.apache.kafka.streams.kstream.KStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +20,12 @@ public class FilterByHemisphere {
 	 */
 	public void northern(KStream<String, String> geoDataStream) {
 
-		// consumer log northern hemisphere
-		Consumer<String> logNorthernHemisphere = geoData -> log.info("Northern Hemisphere: {}", geoData);
-
 		// filter for northern hemisphere geo data
 		KStream<String, String> northernHemisphereStream = geoDataStream
-				.filter((k, v) -> filterByLatitude(v, GeoDataUtils.isInNorthernHemisphere, logNorthernHemisphere));
+				// keep northern hemisphere geo data
+				.filter(GeoDataUtils.isInNorthernHemisphere)
+				// peek geo data
+				.peek((k, v) -> log.info("Northern Hemisphere: {}", v));
 
 		// set output topic
 		northernHemisphereStream.to(GeoDataConstant.NORTHERN_HEMISPHERE_GEO_DATA_TOPIC);
@@ -42,30 +39,15 @@ public class FilterByHemisphere {
 	 */
 	public void southern(KStream<String, String> geoDataStream) {
 
-		// consumer log southern hemisphere
-		Consumer<String> logSouthernHemisphere = geoData -> log.info("Southern Hemisphere: {}", geoData);
-
 		// filter for southern hemisphere geo data
 		KStream<String, String> southernHemisphereStream = geoDataStream
-				.filter((k, v) -> filterByLatitude(v, GeoDataUtils.isInSouthernHemisphere, logSouthernHemisphere));
+				// keep southern hemisphere geo data
+				.filter(GeoDataUtils.isInSouthernHemisphere)
+				// peek geo data
+				.peek((k, v) -> log.info("Southern Hemisphere: {}", v));
 
 		// set output topic
 		southernHemisphereStream.to(GeoDataConstant.SOUTHERN_HEMISPHERE_GEO_DATA_TOPIC);
-
-	}
-
-	private boolean filterByLatitude(String geoDataJson, Predicate<Double> isInThisHemisphere,
-			Consumer<String> logThisHemisphere) {
-
-		Double latitude = GeoDataUtils.extractLatitude(geoDataJson);
-
-		boolean inThisHemisphere = isInThisHemisphere.test(latitude);
-
-		if (inThisHemisphere && logThisHemisphere != null) {
-			logThisHemisphere.accept(geoDataJson);
-		}
-
-		return inThisHemisphere;
 
 	}
 

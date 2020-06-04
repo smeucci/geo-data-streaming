@@ -1,12 +1,12 @@
 package com.github.smeucci.geo.data.kafka.streams.utils;
 
 import java.util.Properties;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.KeyValueMapper;
+import org.apache.kafka.streams.kstream.Predicate;
 
 import com.github.smeucci.geo.data.kafka.streams.costant.GeoDataConstant;
 import com.google.gson.JsonParser; // TODO deprecated use jackson
@@ -16,18 +16,20 @@ public class GeoDataUtils {
 	/**
 	 * Predicate is in northern hemisphere
 	 */
-	public static Predicate<Double> isInNorthernHemisphere = latitude -> latitude > 0;
+	public static Predicate<String, String> isInNorthernHemisphere = (key,
+			geoData) -> GeoDataUtils.extractLatitude(geoData) > 0;
 
 	/**
 	 * Predicate is in southern hemisphere
 	 */
-	public static Predicate<Double> isInSouthernHemisphere = latitude -> latitude < 0;
+	public static Predicate<String, String> isInSouthernHemisphere = (key,
+			geoData) -> GeoDataUtils.extractLatitude(geoData) < 0;
 
 	/**
-	 * Function get key name for hemisphere
+	 * KeyValueMapper to get the key name for hemisphere
 	 */
-	public static Function<String, String> keyForHemisphere = geoData -> isInNorthernHemisphere
-			.test(extractLatitude(geoData)) ? GeoDataConstant.NORTHERN_HEMISPHERE_KEY
+	public static KeyValueMapper<String, String, String> keyForHemisphere = (key,
+			geoData) -> isInNorthernHemisphere.test(key, geoData) ? GeoDataConstant.NORTHERN_HEMISPHERE_KEY
 					: GeoDataConstant.SOUTHERN_HEMISPHERE_KEY;
 
 	/**

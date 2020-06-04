@@ -22,7 +22,7 @@ public class CountByHemisphere {
 		// count geo data occurrences by hemisphere
 		KStream<String, Long> hemisphereStatsStream = geoDataStream
 				// change key, use hemisphere
-				.selectKey((k, v) -> GeoDataUtils.keyForHemisphere.apply(v))
+				.selectKey(GeoDataUtils.keyForHemisphere)
 				// group by key
 				.groupByKey()
 				// count occurrences for each hemisphere
