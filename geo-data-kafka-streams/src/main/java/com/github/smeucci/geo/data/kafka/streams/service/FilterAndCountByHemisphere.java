@@ -26,12 +26,12 @@ public class FilterAndCountByHemisphere {
 				.peek((k, v) -> log.info("Northern Hemisphere: {}", v))
 				// send to northern hemisphere topic
 				.through(GeoDataConstant.NORTHERN_HEMISPHERE_GEO_DATA_TOPIC)
-				// change key, use hemisphere
-				.selectKey(GeoDataUtils.keyForHemisphere)
+				// change key, use northern hemisphere
+				.selectKey((k, v) -> GeoDataConstant.NORTHERN_HEMISPHERE_KEY)
 				// group by key
 				.groupByKey()
-				// count occurrences for each hemisphere
-				.count(Named.as("CountByHemisphere"))
+				// count northern hemisphere occurrences
+				.count(Named.as("CountNorthernHemisphere"))
 				// convert to stream
 				.toStream()
 				// send to hemisphere statistics topic
@@ -53,15 +53,15 @@ public class FilterAndCountByHemisphere {
 				.peek((k, v) -> log.info("Southern Hemisphere: {}", v))
 				// send to southern hemisphere topic
 				.through(GeoDataConstant.SOUTHERN_HEMISPHERE_GEO_DATA_TOPIC)
-				// change key, use hemisphere
-				.selectKey(GeoDataUtils.keyForHemisphere)
+				// change key, use southern hemisphere
+				.selectKey((k, v) -> GeoDataConstant.SOUTHERN_HEMISPHERE_KEY)
 				// group by key
 				.groupByKey()
-				// count occurrences for each hemisphere
-				.count(Named.as("CountByHemisphere"))
+				// count southern hemisphere occurrences
+				.count(Named.as("CountSouthernHemisphere"))
 				// convert to stream
 				.toStream()
-				// set output topic
+				// send to hemisphere statistics topic
 				.to(GeoDataConstant.HEMISPHERE_GEO_DATA_STATISTICS_TOPIC);
 
 	}
