@@ -62,6 +62,19 @@ services:
           - geo-data-mongodb
        networks:
           - geo-data-streaming-network
+          
+   geo-data-kafka-streams:
+       build:
+          context: .
+          dockerfile: Dockerfile.geo-data-kafka-streams
+       image: geo-data-kafka-streams:latest
+       container_name: geo-data-kafka-streams
+       environment:
+          KAFKA_URI: kafka-streams:9092
+       depends_on:
+          - kafka-geo-data-streaming
+       networks:
+          - geo-data-streaming-network
        
 networks:
    geo-data-streaming-network:
