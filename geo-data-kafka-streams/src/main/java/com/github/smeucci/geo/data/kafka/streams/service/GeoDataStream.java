@@ -25,6 +25,9 @@ public class GeoDataStream {
 	@Autowired
 	private CountByHemisphere countByHemisphere;
 
+	@Autowired
+	private FilterAndCountByHemisphere filterAndCountByHemisphere;
+
 	private StreamsBuilder streamsBuilder;
 
 	private KStream<String, String> geoDataStream;
@@ -133,4 +136,23 @@ public class GeoDataStream {
 
 	}
 
+	/**
+	 * Filter geo data by hemisphere and count occurrences for each
+	 * 
+	 * @return
+	 */
+	public GeoDataStream filterAndCountByHemisphere() {
+
+		Assert.notNull(geoDataStream, "geoDataStream is not set. Must first be initialized.");
+		Assert.notNull(streamsBuilder, "streamsBuilder is not set. Must first be initialized.");
+		Assert.isNull(kafkaStreams, "kafkaStreams has already been set. Topology already built.");
+
+		Assert.notNull(filterAndCountByHemisphere, "filterAndCountByHemisphere is not set.");
+
+		filterAndCountByHemisphere.northern(geoDataStream);
+		filterAndCountByHemisphere.southern(geoDataStream);
+
+		return this;
+
+	}
 }
