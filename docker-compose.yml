@@ -2,6 +2,38 @@ version: '3.7'
 
 services:
 
+   zookeeper-geo-data-streaming:
+       image: zookeeper:3.6.1
+       container_name: zookeeper-geo-data-streaming
+       hostname: zookeeper-geo-data-streaming
+       ports:
+           - 2181:2181
+       environment:
+           ZOOKEEPER_CLIENT_PORT: 2181
+           ZOOKEEPER_TICK_TIME: 2000
+       networks:
+           - geo-data-streaming-network
+
+   kafka-geo-data-streaming:
+       image: confluentinc/cp-kafka:5.5.0
+       container_name: kafka-geo-data-streaming
+       hostname: kafka-geo-data-streaming
+       ports:
+           - 29092:29092
+           - 9092:9092
+       environment:
+           KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-geo-data-streaming:29092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+           KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+           KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+           KAFKA_ZOOKEEPER_CONNECT: "zookeeper-geo-data-streaming:2181"
+           KAFKA_BROKER_ID: 1
+           KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+       networks:
+           - geo-data-streaming-network
+       depends_on:
+           - zookeeper-geo-data-streaming
+
    geo-data-mongodb:
        image: mongo:4.2.7
        container_name: geo-data-mongodb
@@ -34,4 +66,4 @@ services:
 networks:
    geo-data-streaming-network:
       name: geo-data-streaming-network
-      driver: bridge
+      attachable: true
