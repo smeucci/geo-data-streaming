@@ -35,10 +35,8 @@ public class GeoDataKafkaStreamsApplication implements CommandLineRunner {
 		geoDataStream
 				// initialize geo data stream
 				.init()
-				// apply filter
-				.filterByHemisphere()
-				// apply count
-				.countByHemisphere()
+				// filter by hemisphere and count occurrences for each
+				.filterAndCountByHemisphere()
 				// build topology
 				.build(properties)
 				// start kafka streams app
