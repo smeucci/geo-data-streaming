@@ -1,0 +1,23 @@
+# First layer, vaven image to build the project
+FROM maven:3.6.3-openjdk-8-slim as BUILDER
+# Copy parent pom
+COPY pom.xml .
+# Set work directory
+WORKDIR geo-data-kafka-streams
+# Copy the project
+COPY ./geo-data-kafka-streams/pom.xml .
+# Download dependencies
+RUN mvn dependency:go-offline
+# Copy src
+COPY ./geo-data-kafka-streams/src ./src
+# Build the project
+RUN mvn clean package --projects :geo-data-kafka-streams
+
+# Second layer
+FROM openjdk:8-jre-alpine
+# Set work directory
+WORKDIR geo-data-kafka-streams
+# Copy the jar from the BUILDER layer
+COPY --from=BUILDER ./geo-data-kafka-streams/target/*.jar ./geo-data-kafka-streams.jar
+# Set the entrypoint for the app
+ENTRYPOINT ["java", "-jar", "./geo-data-kafka-streams.jar"]
