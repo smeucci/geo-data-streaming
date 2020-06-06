@@ -6,6 +6,8 @@ COPY pom.xml .
 WORKDIR geo-data-generator
 # Copy the project
 COPY ./geo-data-generator/pom.xml .
+# Copy start script
+COPY ./geo-data-generator/start.sh .
 # Download dependencies
 RUN mvn dependency:go-offline
 # Copy src
@@ -19,5 +21,9 @@ FROM openjdk:8-jre-alpine
 WORKDIR geo-data-generator
 # Copy the jar from the BUILDER layer
 COPY --from=BUILDER ./geo-data-generator/target/*.jar ./geo-data-generator.jar
+# Copy the start script
+COPY --from=BUILDER ./geo-data-generator/start.sh ./start.sh
+# Give execution permission to start script
+RUN ["chmod", "+x", "./start.sh"]
 # Set the entrypoint for the app
-ENTRYPOINT ["java", "-jar", "./geo-data-generator.jar"]
+ENTRYPOINT ["./start.sh"]

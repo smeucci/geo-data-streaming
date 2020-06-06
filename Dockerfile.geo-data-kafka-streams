@@ -6,6 +6,8 @@ COPY pom.xml .
 WORKDIR geo-data-kafka-streams
 # Copy the project
 COPY ./geo-data-kafka-streams/pom.xml .
+# Copy start script
+COPY ./geo-data-kafka-streams/start.sh .
 # Download dependencies
 RUN mvn dependency:go-offline
 # Copy src
@@ -14,10 +16,14 @@ COPY ./geo-data-kafka-streams/src ./src
 RUN mvn clean package --projects :geo-data-kafka-streams
 
 # Second layer
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jre
 # Set work directory
 WORKDIR geo-data-kafka-streams
 # Copy the jar from the BUILDER layer
 COPY --from=BUILDER ./geo-data-kafka-streams/target/*.jar ./geo-data-kafka-streams.jar
+# Copy the start script
+COPY --from=BUILDER ./geo-data-kafka-streams/start.sh ./start.sh
+# Give execution permission to start script
+RUN ["chmod", "+x", "./start.sh"]
 # Set the entrypoint for the app
-ENTRYPOINT ["java", "-jar", "./geo-data-kafka-streams.jar"]
+ENTRYPOINT ["./start.sh"]
