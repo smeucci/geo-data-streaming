@@ -6,8 +6,6 @@ COPY pom.xml .
 WORKDIR geo-data-kafka-streams
 # Copy the project
 COPY ./geo-data-kafka-streams/pom.xml .
-# Copy start script
-COPY ./geo-data-kafka-streams/start.sh .
 # Download dependencies
 RUN mvn dependency:go-offline
 # Copy src
@@ -21,9 +19,12 @@ FROM openjdk:8-jre
 WORKDIR geo-data-kafka-streams
 # Copy the jar from the BUILDER layer
 COPY --from=BUILDER ./geo-data-kafka-streams/target/*.jar ./geo-data-kafka-streams.jar
-# Copy the start script
-COPY --from=BUILDER ./geo-data-kafka-streams/start.sh ./start.sh
+# Create start script
+RUN echo "echo Waiting for 15 seconds..." >> start.sh && \
+	echo "sleep 15" >> start.sh && \
+	echo "echo Starting geo-data-kafka-streams..." >> start.sh && \
+	echo "java -jar ./geo-data-kafka-streams.jar" >> start.sh
 # Give execution permission to start script
 RUN ["chmod", "+x", "./start.sh"]
 # Set the entrypoint for the app
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/bin/sh", "./start.sh"]
